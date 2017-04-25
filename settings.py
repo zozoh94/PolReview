@@ -2,7 +2,7 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-programmes_directory = BASE_DIR + '/programmes'
+project_directory = BASE_DIR + '/project'
 
 candidates = {
     'arthaud': { 'name': "Nathalie Arthaud", 'file': 'arthaud.pdf'},
