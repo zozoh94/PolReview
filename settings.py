@@ -19,3 +19,9 @@ candidates = {
     'asselineau' : { 'name': "François Asselineau", 'file': 'asselineau.pdf'},
     'le-pen' : { 'name': "Marine Le Pen", 'file': 'le-pen.pdf'},
 }
+
+subject = {
+    'eco' : { 'name' : "Economie", 'keywords': ['economie', 'liberalisme', 'protectionisme', 'banques', 'capitalisme', 'libre-échange', 'ficalité', 'compétitivité', 'dette', 'investissements', 'PME', 'TPE', 'dépenses', 'allocations', 'charges', 'impôts', 'coût', 'entreprises', '35 heures', 'chômage', 'bpifrance' },
+    '
+    
+}
