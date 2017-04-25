@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 
 import os
+import nltk
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 project_directory = BASE_DIR + '/projects/'
+
+nltk.data.path.append(BASE_DIR + '/nltk_data/')
 
 candidates = {
     'arthaud': { 'name': "Nathalie Arthaud", 'file': 'arthaud.pdf'},

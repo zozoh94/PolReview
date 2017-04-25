@@ -30,16 +30,12 @@ class Window(QWidget):
 def parseProject(filename):
     text = textract.process(project_directory + filename)
     text = text.decode('utf-8')
-    text = re.sub('\n', ' ', text)
-    text = re.sub('\t', ' ', text)
-    text = re.sub("\'\'", '"', text)
-    text = re.sub("[`‘’]+", r"'", text)
-    text = re.sub("[≪≫“”]", '"', text)
     return text
         
 if __name__ == '__main__':
     for candidate in candidates.values():
         text = parseProject(candidate.get('file'))
+        text = nltk.word_tokenize(text, 'french')
         print(text)
 
     #app = QApplication(sys.argv)
