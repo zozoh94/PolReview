@@ -12,3 +12,4 @@ source bin/activate
 pip install -r requirements.txt
 ./pol_review.py
 ```
+Pour les problèmes avec textract: http://textract.readthedocs.io/en/latest/installation.html
