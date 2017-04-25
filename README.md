@@ -5,8 +5,10 @@ Si le projet fonctionne il pourra être agrémenté d'un Chat Bot.
 ## Lancement du projet
 - Télécharger le dossier
 - Dans un terminal :
-  -virtualenv -p /usr/bin/python3.5 PolReview
-  -cd PolReview
-  -source bin/activate
-  -pip install -r requirements.txt
-  -./pol_review.py
+```bash
+virtualenv -p /usr/bin/python3.5 PolReview
+cd PolReview
+source bin/activate
+pip install -r requirements.txt
+./pol_review.py
+```
