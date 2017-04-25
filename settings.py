@@ -24,7 +24,6 @@ candidates = {
 }
 
 subject = {
-    'eco' : { 'name' : "Economie", 'keywords': ['economie', 'liberalisme', 'protectionisme', 'banques', 'capitalisme', 'libre-échange', 'ficalité', 'compétitivité', 'dette', 'investissements', 'PME', 'TPE', 'dépenses', 'allocations', 'charges', 'impôts', 'coût', 'entreprises', '35 heures', 'chômage', 'bpifrance' },
-    '
+    'eco' : { 'name' : "Economie", 'keywords': ['economie', 'liberalisme', 'protectionisme', 'banques', 'capitalisme', 'libre-échange', 'ficalité', 'compétitivité', 'dette', 'investissements', 'PME', 'TPE', 'dépenses', 'allocations', 'charges', 'impôts', 'coût', 'entreprises', '35 heures', 'chômage', 'bpifrance'] },
     
 }
