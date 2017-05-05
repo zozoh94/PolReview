@@ -9,6 +9,13 @@ project_directory = BASE_DIR + '/projects/'
 
 nltk.data.path.append(BASE_DIR + '/nltk_data/')
 
+againsts = ['refuse', 'oppose', 'contre', 'rompre', 'combat']
+fors = ['defend', 'accept']
+
+subjects = {
+    'libre_echange' : ['libre-echang', 'mondialis'],
+}
+
 candidates = {
     'arthaud': { 'name': "Nathalie Arthaud", 'file': 'arthaud.pdf'},
     'poutou': { 'name': "Philippe Poutou", 'file': 'poutou.pdf'},
