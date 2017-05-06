@@ -2,7 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{empheq}
 
-\title{TAL - Politic review}
+\title{TAL - Political review}
 \author{ Ismail Erradi, Björn Goriatcheff, Enzo Hamelin  }
 \date{06 May 2017}
 
@@ -39,96 +39,138 @@ Additionally, this text was tokenized using nltk library.
 Weighting correctly generated tokens was the most difficult part of our project. In order to do so, we semantically analyze a sentence of tokens. If this sentence contained a keyword of our dictionary then the proposition was weighted according to the grammar (affirmative sentence or negative sentence).
 Every similar proposition is weighted the same way and counted as a positive or negative proposition. 
 \subsection{Classify}
-To classify the position of a candidate on a precise subject we count how many times this subject was recall in the program and how was the recall (positive or negative) compared to the original opinion. A simple calculus is executed to know if we can trust the opinion using the following formula: 
+To classify the position of a candidate on a precise subject we count how many times this subject was recall in the program and how was the recall (positive or negative) compared to the original opinion. A simple calculus is executed to know if we can trust the opinion using the following formulas: 
 \begin{empheq}{equation*}
-\large trust-for = \frac {positive}{positive+negative+neutral}
+\large for = \frac {positive}{positive+negative+neutral}
 \end{empheq}
 \begin{empheq}{equation*}
-\large trust-against = \frac {negative}{positive+negative+neutral}
+\large against = \frac {negative}{positive+negative+neutral}
+\end{empheq}
+\begin{empheq}{equation*}
+\large result = max (  for , against )
 \end{empheq}
 \section{Results}
-Analyse des programmes...
-\paragraph{Libre échange :\\}
-Nathalie Arthaud
 
-Phrases concernées : 0 
-Avis pour : 0
-Avis contre : 0
-\\
-Philippe Poutou
+\subsection{Exemple: Nicolas Dupont-Aignan }
 
-Phrases concernées : 3
-Avis pour : 0
-Avis contre : 1
-\\
-Jean-Luc Mélenchon
+\emph{Europe :} \\
+Phrases concernées : 426
+Avis pour : 54
+Avis contre : 38
+Sans avis : 334\\
+Indice pour : 0.586
+Indice contre : 0.413
+\\pour 
 
-Phrases concernées : 7
-Avis pour : 0
-Avis contre : 11
-\\
-Jacques Cheminade
+\emph{Immigration :}\\
+Phrases concernées : 33
+Avis pour : 15
+Avis contre : 3
+Sans avis : 15\\
+Indice pour : 0.833
+Indice contre : 0.166
+\\pour
 
-Phrases concernées : 4
-Avis pour : 1
-Avis contre : 2
-\\
-Benoît Hamon
-
-Phrases concernées : 6
-Avis pour : 2
-Avis contre : 1
-\\
-Emmanuel Macron
-
-Phrases concernées : 0
-Avis pour : 0
-Avis contre : 0
-\\
-Jean Lassalle
-
-Phrases concernées : 1
-Avis pour : 0
-Avis contre : 0
-\\
-François Fillon
-
-Phrases conceres : 2
-Avis pour : 0
-Avis contre : 1
-\\
-Nicolas Dupont-Aignan
-
-
+\emph{Libre-Échange :}\\
 Phrases concernées : 13
 Avis pour : 0
 Avis contre : 4
+Sans avis : 9\\
+Indice pour : 0.0
+Indice contre : 1.0
 \\
-François Asselineau
+contre
 
+\emph{Ecologie : }\\
+Phrases concernées : 80
+Avis pour : 22
+Avis contre : 18
+Sans avis : 40\\
+Indice pour : 0.55
+Indice contre : 0.45
+\\pour
 
-Phrases concernées : 2
+\emph{Souveraineté : }\\
+Phrases concernées : 24
+Avis pour : 5
+Avis contre : 1
+Sans avis : 18\\
+Indice pour : 0.833
+Indice contre : 0.166
+\\pour
+
+\subsection{Exemple: Jean-Luc Mélenchon }
+
+\emph{Europe :} \\
+Phrases concernées : 41
+Avis pour : 3
+Avis contre : 38
+Sans avis : 0\\
+Indice pour : 0.073
+Indice contre : 0.926
+\\contre
+
+\emph{Immigration : }\\
+Phrases concernées : 0
 Avis pour : 0
 Avis contre : 0
-\\
-Marine Le Pen
+Sans avis : 0\\
+Indice pour : 0
+Indice contre : 0
+\\neutre
 
+\emph{Libre-Échange : }\\
+Phrases concernées : 8
+Avis pour : 1
+Avis contre : 7
+Sans avis : 0\\
+Indice pour : 0.125
+Indice contre : 0.875
+\\contre
 
-Phrases concernées : 3
+\emph{Ecologie : }\\
+Phrases concernées : 13
 Avis pour : 0
-Avis contre : 2
+Avis contre : 10
+Sans avis : 3\\
+Indice pour : 0.0
+Indice contre : 1.0
+\\contre
 
+\emph{Souveraineté : }\\
+Phrases concernées : 1
+Avis pour : 0
+Avis contre : 1
+Sans avis : 0\\
+Indice pour : 0.0
+Indice contre : 1.0
+\\contre
 
 
 \section{To Achieve}
+\subsection{Goals }
 \begin{itemize}
-    \item Addition of more subjects (Social, Society, Constitutional organization, State organization, Employment, Firms, Start-up...)
-    \item Deeper analyze of sentence, recognition of complex sentences, metaphor..
-    \item More calculus in order to have precise results
+    \item Addition of more subjects (Social, Society, Constitutional organization, State organization, Employment, Firms, Start-up...) and maybe with details ( El-Khomri's law of work, 6th republic )
+    \item Deeper analyze of sentence, recognition of complex sentences, metaphor..\\
+    Some sentence are classify as "sans avis" instead of being assigned to "pour" or "contre"
+    
+    \item More calculus and verification in order to have more precise results: some irregular result persist, like macron's sentence's result are often evaluate at "concern =  0" or "sans avis".
+    
+    \item Developing recognition of false-positive review as we implement in the course TAL
+    \item User interaction, ability to choose a specific subject and compare the result for selected candidates
     \item A chatbot to reply to some questions about a candidate
     \item A summary generator of candidates positions
+    
 \end{itemize}
 
+\subsection{Errors: }
 
+\emph{François Fillon : subject = Globalization}
+\begin{quote}
+Pourtant cette voix s’est faite moins forte ces dernières années a perdu son originalité diluée dans le grand bain de la mondialisation porteur d’uniformisation.
+\end{quote}
+This sentence is very difficult to understand for our program, with the use of metaphor and indirect meaning ("cette voix" = French voice ). We might be able to resolve this by adding larger contextual verification:\\
+take 1-2 previous sentences or next sentences and create link between subjects (imply the need of semantic tree).\\
+Moreover the use of complex rhetoric vocabulary ("originalité" and "monde porteur uniformisation") understanding the opposition of terms is delicate.
 \end{document}
 
