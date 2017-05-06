@@ -47,11 +47,9 @@ def analyze_subject(candidate, subject):
     if not candidate.get('opinions', None):
         candidate['opinions'] = {}          
     candidate['opinions'][subject] = Opinion(subject.title())
-    text = candidate['project']
-    sentences = nltk.sent_tokenize(text, 'french')
+    sentences = candidate['sentences']
     for sentence in sentences:
-        tokens = nltk.word_tokenize(sentence, 'french')
-        for token in tokens:
+        for token in sentence:
             t = unicodedata.normalize('NFD', token).encode('ascii', 'ignore')
 
             libre_echange = subjects[subject]               
@@ -59,7 +57,7 @@ def analyze_subject(candidate, subject):
                 reg = re.compile(r".*" + word + ".*")
                 if re.search(reg, t.decode('utf-8')):                        
                     candidate['opinions'][subject].total += 1
-                    for token in tokens:
+                    for token in sentence:
                         #Suppression des accents
                         t2 = unicodedata.normalize('NFD', token).encode('ascii', 'ignore')
                         for a in againsts:                                
@@ -74,6 +72,13 @@ def analyze_subject(candidate, subject):
     candidate['opinions'][subject].finalize()
 
     
+def tokenize_project(candidate):
+    sentences = nltk.sent_tokenize(candidate['project'], 'french')
+    tokens = []
+    for sentence in sentences:
+        tokens.append(nltk.word_tokenize(sentence, 'french'))
+    return tokens
+    
 def print_results(candidate):
     print('\n'+candidate['name'])
 
@@ -85,6 +90,12 @@ def print_results(candidate):
         print("Sans avis : " + str(opinion.no_opinions))
         print("Indice pour : " + str(opinion.ratio_for))
         print("Indice contre : " + str(opinion.ratio_against))
+        if(opinion.ratio_for>opinion.ratio_against):
+            print("Pour")
+        elif(opinion.ratio_against>opinion.ratio_for):
+            print("Contre")
+        else:
+            print("Neutre")
         
     print('\n\n')
 
@@ -94,6 +105,8 @@ if __name__ == '__main__':
     
     for candidate in candidates:
         candidate['project'] = parse_project(candidate.get('file'))
+        candidate['sentences'] = tokenize_project(candidate)
+        
         for subject in subjects:
             analyze_subject(candidate, subject)
         
