@@ -46,32 +46,36 @@ def analyze_subject(candidate, subject):
     if not candidate.get('opinions', None):
         candidate['opinions'] = {}          
     candidate['opinions'][subject] = Opinion(subject.title())
-    text = candidate['project']
-    sentences = nltk.sent_tokenize(text, 'french')
+    sentences = candidate['sentences']
     
-    for sentence in sentences:
-        tokens = nltk.word_tokenize(sentence, 'french')
-        for token in tokens:
+    for sentence in sentences:        
+        for token in sentence:
             t = unicodedata.normalize('NFD', token).encode('ascii', 'ignore')
               
             for word in words_subjects:                    
                 reg = re.compile(r".*" + word + ".*")
                 if re.search(reg, t.decode('utf-8')):                        
                     candidate['opinions'][subject].total += 1
-                    for token in tokens:
+                    for token in sentence:
                         #Suppression des accents
                         t2 = unicodedata.normalize('NFD', token).encode('ascii', 'ignore')
-                        for a in againsts:                                
+                        for a in againsts:
                             reg = re.compile(r".*" + a + ".*")
                             if re.search(reg, t2.decode('utf-8')):
                                 candidate['opinions'][subject].against += 1
                         for f in fors:                                
                             reg = re.compile(r".*" + f + ".*")
-                            if re.search(reg, t2.decode('utf-8')):                                   
+                            if re.search(reg, t2.decode('utf-8')):                  
                                 candidate['opinions'][subject].fore += 1
 
     candidate['opinions'][subject].finalize()
 
+def tokenize_project(candidate):
+    sentences = nltk.sent_tokenize(candidate['project'], 'french')
+    tokens = []
+    for sentence in sentences:
+        tokens.append(nltk.word_tokenize(sentence, 'french'))
+    return tokens
     
 def print_results(candidate):
     print('\n'+candidate['name'])
@@ -100,17 +104,16 @@ if __name__ == '__main__':
     
     for candidate in candidates:
         candidate['project'] = parse_project(candidate.get('file'))
+        candidate['sentences'] = tokenize_project(candidate)
         for subject in subjects:
             analyze_subject(candidate, subject)
         
         print_results(candidate)
-
         
     subject = input("How about you choose a subject now : ")
     subjects[subject] = []
     key = input("key words for this subject(separated by ',') : ")
     subjects[subject] = key.split(',')
     for candidate in candidates:
-        candidate['project'] = parse_project(candidate.get('file'))
         analyze_subject(candidate, subject)
         print_results(candidate)
