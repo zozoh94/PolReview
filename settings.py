@@ -16,7 +16,6 @@ subjects = {
     'libre_echange' : ['libre-echang', 'mondialis'],
 }
 
-<<<<<<< HEAD
 candidates = [
     { 'name': "Nathalie Arthaud", 'file': 'arthaud.pdf'},
     { 'name': "Philippe Poutou", 'file': 'poutou.pdf'},
@@ -30,9 +29,3 @@ candidates = [
     { 'name': "François Asselineau", 'file': 'asselineau.pdf'},
     { 'name': "Marine Le Pen", 'file': 'le-pen.pdf'},
 ]
-=======
-subject = {
-    'eco' : { 'name' : "Economie", 'keywords': ['economie', 'liberalisme', 'protectionisme', 'banques', 'capitalisme', 'libre-échange', 'ficalité', 'compétitivité', 'dette', 'investissements', 'PME', 'TPE', 'dépenses', 'allocations', 'charges', 'impôts', 'coût', 'entreprises', '35 heures', 'chômage', 'bpifrance'] },
-    
-}
->>>>>>> b5670cee7f8b0cda05691f4d45e9beae64c0490e
