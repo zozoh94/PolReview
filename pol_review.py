@@ -24,66 +24,80 @@ class Opinion:
             self.fore = self.total        
         if self.against > self.total:
             self.against = self.total
+        if self.total < (self.fore + self.against):
+            self.total = self.fore + self.against
         self.no_opinions = self.total - self.fore - self.against
         if self.total != 0 and self.total != self.no_opinions:
             self.ratio_for = self.fore / (self.total-self.no_opinions)
             self.ratio_against = self.against / (self.total-self.no_opinions)
-        
+
+            
 def parse_project(filename):
     with open(project_directory + filename, "r") as filepointer:
         text = filepointer.read()
         text = text.strip().lower()
     return text
-    
-    
-def subject(tokens, t,sujet):
-    subject = subjects[sujet]               
-    for word in subject:                    
-        reg = re.compile(r".*" + word + ".*")
-        if re.search(reg, t.decode('utf-8')):                        
-            candidate['opinions'][sujet].total += 1
-            candidate.update(opinions=candidate['opinions'])
-            for token in tokens:
-            #Suppression des accents
-                t2 = unicodedata.normalize('NFD', token).encode('ascii', 'ignore')
-                for a in againsts:                                
-                    reg = re.compile(r".*" + a + ".*")
-                    if re.search(reg, t2.decode('utf-8')):
-                        candidate['opinions'][sujet].against += 1
-                for f in fors:                                
-                    reg = re.compile(r".*" + f + ".*")
-                    if re.search(reg, t2.decode('utf-8')):                                   
-                        candidate['opinions'][sujet].fore += 1
 
-def analyze_candidates(candidate, sub):
-    candidate['opinions'] = {}
-    candidate['opinions'][sub] = Opinion(sub)
-    text = parse_project(candidate.get('file'))
+def analyze_subject(candidate, subject):
+    words_subjects = subjects.get(subject, None)
+    if not words_subjects:
+        print("Subject " + subject + " does not exist") 
+        exit()
+    if not candidate.get('opinions', None):
+        candidate['opinions'] = {}          
+    candidate['opinions'][subject] = Opinion(subject.title())
+    text = candidate['project']
     sentences = nltk.sent_tokenize(text, 'french')
     for sentence in sentences:
         tokens = nltk.word_tokenize(sentence, 'french')
         for token in tokens:
             t = unicodedata.normalize('NFD', token).encode('ascii', 'ignore')
-            subject(tokens, t,sub)
-    candidate['opinions'][sub].finalize()
+              
+            for word in words_subjects:                    
+                reg = re.compile(r".*" + word + ".*")
+                if re.search(reg, t.decode('utf-8')):                        
+                    candidate['opinions'][subject].total += 1
+                    for token in tokens:
+                        #Suppression des accents
+                        t2 = unicodedata.normalize('NFD', token).encode('ascii', 'ignore')
+                        for a in againsts:                                
+                            reg = re.compile(r".*" + a + ".*")
+                            if re.search(reg, t2.decode('utf-8')):
+                                candidate['opinions'][subject].against += 1
+                        for f in fors:                                
+                            reg = re.compile(r".*" + f + ".*")
+                            if re.search(reg, t2.decode('utf-8')):                                   
+                                candidate['opinions'][subject].fore += 1
 
+    candidate['opinions'][subject].finalize()
 
-def results(candidate):
+    
+def print_results(candidate):
     print('\n'+candidate['name'])
-    for sub in subjects:
-        print('\n'+sub+' :')
-        print("Phrases concernées : " + str(candidate['opinions'][sub].total))
-        print("Avis pour : " + str(candidate['opinions'][sub].fore))
-        print("Avis contre : " + str(candidate['opinions'][sub].against))
-        print("Sans avis : " + str(candidate['opinions'][sub].no_opinions))
-        print("Indice pour : " + str(candidate['opinions'][sub].ratio_for))
-        print("Indice contre : " + str(candidate['opinions'][sub].ratio_against))
-        print('\n\n')
+
+    for opinion in candidate['opinions'].values():        
+        print("\n"+opinion.name+" :")
+        print("Phrases concernées : " + str(opinion.total))
+        print("Avis pour : " + str(opinion.fore))
+        print("Avis contre : " + str(opinion.against))
+        print("Sans avis : " + str(opinion.no_opinions))
+        print("Indice pour : " + str(opinion.ratio_for))
+        print("Indice contre : " + str(opinion.ratio_against))
+        if(opinion.ratio_for>opinion.ratio_against):
+            print("pour")
+        elif(opinion.ratio_against>opinion.ratio_for):
+            print("contre")
+        else:
+            print("neutre")
+    print('\n\n')
+
 
 if __name__ == '__main__':
     print("Analyse des programmes...\n\n")
+    
     for candidate in candidates:
-        for sub in subjects:
-            analyze_candidates(candidate,sub)
-        results(candidate)
-           
+        candidate['project'] = parse_project(candidate.get('file'))
+        for subject in subjects:
+            analyze_subject(candidate, subject)
+        
+        print_results(candidate)
