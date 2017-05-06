@@ -30,16 +30,15 @@ class Opinion:
             self.ratio_against = self.against / (self.total-self.no_opinions)
         
 def parse_project(filename):
-    tokens = []
     with open(project_directory + filename, "r") as filepointer:
         text = filepointer.read()
         text = text.strip().lower()
     return text
     
     
-def subject(token, t,sujet):
-    libre_echange = subjects[sujet]               
-    for word in libre_echange:                    
+def subject(tokens, t,sujet):
+    subject = subjects[sujet]               
+    for word in subject:                    
         reg = re.compile(r".*" + word + ".*")
         if re.search(reg, t.decode('utf-8')):                        
             candidate['opinions'][sujet].total += 1
@@ -56,32 +55,35 @@ def subject(token, t,sujet):
                     if re.search(reg, t2.decode('utf-8')):                                   
                         candidate['opinions'][sujet].fore += 1
 
+def analyze_candidates(candidate, sub):
+    candidate['opinions'] = {}
+    candidate['opinions'][sub] = Opinion(sub)
+    text = parse_project(candidate.get('file'))
+    sentences = nltk.sent_tokenize(text, 'french')
+    for sentence in sentences:
+        tokens = nltk.word_tokenize(sentence, 'french')
+        for token in tokens:
+            t = unicodedata.normalize('NFD', token).encode('ascii', 'ignore')
+            subject(tokens, t,sub)
+    candidate['opinions'][sub].finalize()
+
+
+def results(candidate):
+    print('\n'+candidate['name'])
+    for sub in subjects:
+        print('\n'+sub+' :')
+        print("Phrases concernées : " + str(candidate['opinions'][sub].total))
+        print("Avis pour : " + str(candidate['opinions'][sub].fore))
+        print("Avis contre : " + str(candidate['opinions'][sub].against))
+        print("Sans avis : " + str(candidate['opinions'][sub].no_opinions))
+        print("Indice pour : " + str(candidate['opinions'][sub].ratio_for))
+        print("Indice contre : " + str(candidate['opinions'][sub].ratio_against))
+        print('\n\n')
 
 if __name__ == '__main__':
     print("Analyse des programmes...\n\n")
-    
     for candidate in candidates:
-        candidate['opinions'] = {}
         for sub in subjects:
-            candidate['opinions'][sub] = Opinion(sub)
-        text = parse_project(candidate.get('file'))
-        sentences = nltk.sent_tokenize(text, 'french')
-        for sentence in sentences:
-            tokens = nltk.word_tokenize(sentence, 'french')
-            for token in tokens:
-                t = unicodedata.normalize('NFD', token).encode('ascii', 'ignore')
-                for sub in subjects:
-                    subject(token, t,sub)
-        
-        for sub in subjects:
-            candidate['opinions'][sub].finalize()
-        for sub in subjects:
-            print('\n'+candidate['name'])
-            print('\n'+sub+' :')
-            print("Phrases concernées : " + str(candidate['opinions'][sub].total))
-            print("Avis pour : " + str(candidate['opinions'][sub].fore))
-            print("Avis contre : " + str(candidate['opinions'][sub].against))
-            print("Sans avis : " + str(candidate['opinions'][sub].no_opinions))
-            print("Indice pour : " + str(candidate['opinions'][sub].ratio_for))
-            print("Indice contre : " + str(candidate['opinions'][sub].ratio_against))
-            print('\n\n')
+            analyze_candidates(candidate,sub)
+        results(candidate)
+           
