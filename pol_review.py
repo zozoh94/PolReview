@@ -33,33 +33,10 @@ class Opinion:
 
             
 def parse_project(filename):
-    tokens = []
     with open(project_directory + filename, "r") as filepointer:
         text = filepointer.read()
         text = text.strip().lower()
     return text
-    
-
-def subject(token, t,sujet):
-    libre_echange = subjects[sujet]               
-    for word in libre_echange:                    
-        reg = re.compile(r".*" + word + ".*")
-        if re.search(reg, t.decode('utf-8')):                        
-            candidate['opinions'][sujet].total += 1
-            candidate.update(opinions=candidate['opinions'])
-            for token in tokens:
-            #Suppression des accents
-                t2 = unicodedata.normalize('NFD', token).encode('ascii', 'ignore')
-                for a in againsts:                                
-                    reg = re.compile(r".*" + a + ".*")
-                    if re.search(reg, t2.decode('utf-8')):
-                        candidate['opinions'][sujet].against += 1
-                for f in fors:                                
-                    reg = re.compile(r".*" + f + ".*")
-                    if re.search(reg, t2.decode('utf-8')):                                   
-                        candidate['opinions'][sujet].fore += 1
-
-
 
 def analyze_subject(candidate, subject):
     words_subjects = subjects.get(subject, None)
@@ -75,8 +52,7 @@ def analyze_subject(candidate, subject):
         tokens = nltk.word_tokenize(sentence, 'french')
         for token in tokens:
             t = unicodedata.normalize('NFD', token).encode('ascii', 'ignore')
-
-            libre_echange = subjects[subject]               
+              
             for word in words_subjects:                    
                 reg = re.compile(r".*" + word + ".*")
                 if re.search(reg, t.decode('utf-8')):                        
@@ -107,7 +83,12 @@ def print_results(candidate):
         print("Sans avis : " + str(opinion.no_opinions))
         print("Indice pour : " + str(opinion.ratio_for))
         print("Indice contre : " + str(opinion.ratio_against))
-        
+        if(opinion.ratio_for>opinion.ratio_against):
+            print("pour")
+        elif(opinion.ratio_against>opinion.ratio_for):
+            print("contre")
+        else:
+            print("neutre")
     print('\n\n')
 
 
