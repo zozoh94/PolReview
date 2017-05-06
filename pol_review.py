@@ -38,28 +38,6 @@ def parse_project(filename):
         text = filepointer.read()
         text = text.strip().lower()
     return text
-    
-
-def subject(token, t,sujet):
-    libre_echange = subjects[sujet]               
-    for word in libre_echange:                    
-        reg = re.compile(r".*" + word + ".*")
-        if re.search(reg, t.decode('utf-8')):                        
-            candidate['opinions'][sujet].total += 1
-            candidate.update(opinions=candidate['opinions'])
-            for token in tokens:
-            #Suppression des accents
-                t2 = unicodedata.normalize('NFD', token).encode('ascii', 'ignore')
-                for a in againsts:                                
-                    reg = re.compile(r".*" + a + ".*")
-                    if re.search(reg, t2.decode('utf-8')):
-                        candidate['opinions'][sujet].against += 1
-                for f in fors:                                
-                    reg = re.compile(r".*" + f + ".*")
-                    if re.search(reg, t2.decode('utf-8')):                                   
-                        candidate['opinions'][sujet].fore += 1
-
-
 
 def analyze_subject(candidate, subject):
     words_subjects = subjects.get(subject, None)
