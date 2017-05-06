@@ -103,6 +103,7 @@ def print_results(candidate):
 
 if __name__ == '__main__':
     print("Analyse des programmes...\n\n")
+
     
     for candidate in candidates:
         candidate['project'] = parse_project(candidate.get('file'))
@@ -111,4 +112,12 @@ if __name__ == '__main__':
         for subject in subjects:
             analyze_subject(candidate, subject)            
         
+        print_results(candidate)
+
+    subject = input("How about you choose a subject now : ")
+    subjects[subject] = []
+    key = input("key words for this subject(separated by ',') : ")
+    subjects[subject] = key.split(',')
+    for candidate in candidates:
+        analyze_subject(candidate, subject)
         print_results(candidate)
