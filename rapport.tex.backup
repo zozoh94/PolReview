@@ -41,11 +41,91 @@ Every similar proposition is weighted the same way and counted as a positive or 
 \subsection{Classify}
 To classify the position of a candidate on a precise subject we count how many times this subject was recall in the program and how was the recall (positive or negative) compared to the original opinion. A simple calculus is executed to know if we can trust the opinion using the following formula: 
 \begin{empheq}{equation*}
-\large trust = \frac {positive}{positive+negative+neutral}
+\large trust-for = \frac {positive}{positive+negative+neutral}
+\end{empheq}
+\begin{empheq}{equation*}
+\large trust-against = \frac {negative}{positive+negative+neutral}
 \end{empheq}
 \section{Results}
-\section{To Achieve}
+Analyse des programmes...
+\paragraph{Libre échange :\\}
+Nathalie Arthaud
 
+Phrases concernées : 0 
+Avis pour : 0
+Avis contre : 0
+\\
+Philippe Poutou
+
+Phrases concernées : 3
+Avis pour : 0
+Avis contre : 1
+\\
+Jean-Luc Mélenchon
+
+Phrases concernées : 7
+Avis pour : 0
+Avis contre : 11
+\\
+Jacques Cheminade
+
+Phrases concernées : 4
+Avis pour : 1
+Avis contre : 2
+\\
+Benoît Hamon
+
+Phrases concernées : 6
+Avis pour : 2
+Avis contre : 1
+\\
+Emmanuel Macron
+
+Phrases concernées : 0
+Avis pour : 0
+Avis contre : 0
+\\
+Jean Lassalle
+
+Phrases concernées : 1
+Avis pour : 0
+Avis contre : 0
+\\
+François Fillon
+
+Phrases conceres : 2
+Avis pour : 0
+Avis contre : 1
+\\
+Nicolas Dupont-Aignan
+
+
+Phrases concernées : 13
+Avis pour : 0
+Avis contre : 4
+\\
+François Asselineau
+
+
+Phrases concernées : 2
+Avis pour : 0
+Avis contre : 0
+\\
+Marine Le Pen
+
+
+Phrases concernées : 3
+Avis pour : 0
+Avis contre : 2
+
+
+
+\section{To Achieve}
+\begin{itemize}
+    \item Addition of more subjects (Social, Society, Constitutional organization, State organization, Employment, Firms, Start-up...)
+    \item Deeper analyze of sentence, recognition of complex sentences, metaphor..
+    \item More calculus in order to have precise results
+\end{itemize}
 
 
 \end{document}
