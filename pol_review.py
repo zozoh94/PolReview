@@ -48,6 +48,7 @@ def analyze_subject(candidate, subject):
     candidate['opinions'][subject] = Opinion(subject.title())
     text = candidate['project']
     sentences = nltk.sent_tokenize(text, 'french')
+    
     for sentence in sentences:
         tokens = nltk.word_tokenize(sentence, 'french')
         for token in tokens:
@@ -84,16 +85,18 @@ def print_results(candidate):
         print("Indice pour : " + str(opinion.ratio_for))
         print("Indice contre : " + str(opinion.ratio_against))
         if(opinion.ratio_for>opinion.ratio_against):
-            print("pour")
+            print("Pour")
         elif(opinion.ratio_against>opinion.ratio_for):
-            print("contre")
+            print("Contre")
         else:
-            print("neutre")
+            print("Neutre")
+            
     print('\n\n')
 
 
 if __name__ == '__main__':
     print("Analyse des programmes...\n\n")
+
     
     for candidate in candidates:
         candidate['project'] = parse_project(candidate.get('file'))
@@ -101,6 +104,8 @@ if __name__ == '__main__':
             analyze_subject(candidate, subject)
         
         print_results(candidate)
+
+        
     subject = input("How about you choose a subject now : ")
     subjects[subject] = []
     key = input("key words for this subject(separated by ',') : ")
