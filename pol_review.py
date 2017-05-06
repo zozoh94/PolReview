@@ -25,6 +25,8 @@ class Opinion:
             self.fore = self.total        
         if self.against > self.total:
             self.against = self.total
+        if self.total < (self.fore + self.against):
+            self.total = self.fore + self.against
         self.no_opinions = self.total - self.fore - self.against
         if self.total != 0 and self.total != self.no_opinions:
             self.ratio_for = self.fore / (self.total-self.no_opinions)
@@ -37,6 +39,7 @@ def parse_project(filename):
     text = text.strip().lower()
     return text
 
+
 def analyze_subject(candidate, subject):
     words_subjects = subjects.get(subject, None)
     if not words_subjects:
@@ -45,7 +48,7 @@ def analyze_subject(candidate, subject):
     if not candidate.get('opinions', None):
         candidate['opinions'] = {}          
     candidate['opinions'][subject] = Opinion(subject.title())
-    text = parse_project(candidate.get('file'))
+    text = candidate['project']
     sentences = nltk.sent_tokenize(text, 'french')
     for sentence in sentences:
         tokens = nltk.word_tokenize(sentence, 'french')
@@ -57,7 +60,6 @@ def analyze_subject(candidate, subject):
                 reg = re.compile(r".*" + word + ".*")
                 if re.search(reg, t.decode('utf-8')):                        
                     candidate['opinions'][subject].total += 1
-                    candidate.update(opinions=candidate['opinions'])
                     for token in tokens:
                         #Suppression des accents
                         t2 = unicodedata.normalize('NFD', token).encode('ascii', 'ignore')
@@ -72,6 +74,7 @@ def analyze_subject(candidate, subject):
 
     candidate['opinions'][subject].finalize()
 
+    
 def print_results(candidate):
     print('\n'+candidate['name'])
 
@@ -91,7 +94,8 @@ if __name__ == '__main__':
     print("Analyse des programmes...\n\n")
     
     for candidate in candidates:
-        analyze_subject(candidate, 'libre-échange')
-        analyze_subject(candidate, 'souveraineté')        
+        candidate['project'] = parse_project(candidate.get('file'))
+        for subject in subjects:
+            analyze_subject(candidate, subject)            
         
         print_results(candidate)

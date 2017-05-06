@@ -91,6 +91,7 @@ ENV/
 
 bin/
 include/
+share/
 
 rapport.log
 rapport.aux

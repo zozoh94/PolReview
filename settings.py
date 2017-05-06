@@ -9,12 +9,16 @@ project_directory = BASE_DIR + '/projects/'
 
 nltk.data.path.append(BASE_DIR + '/nltk_data/')
 
-againsts = ['refuse', 'oppose', 'contre', 'rompre', 'combat']
-fors = ['defend', 'accept', 'retrouv']
+againsts = ['refuse', 'oppose', 'contre', 'rompre', 'combat', 'sorti', 'expuls']
+fors = ['defend', 'accept', 'retrouv', 'adopt', 'favorable', 'sauve']
 
 subjects = {
     'libre-échange' : ['libre-echang', 'mondialis', 'TAFTA', 'CETA'],
     'souveraineté' : ['souverainete', 'sortie de l\'union européenne', 'frontière'],
+    'immigration' : ['immigr'],
+    'terrorisme' : ['terroris', 'extremis', 'attentat'],
+    'ecologie' : ['environnement', 'ecolo', 'energies renouvelable', 'energies nouvelle'],
+    'europe' : ['union europeenne', 'europe', 'euro'],
 }
 
 candidates = [
