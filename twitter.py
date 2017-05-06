@@ -1,3 +1,6 @@
+#!bin/python
+# -*- coding: utf-8 -*-
+
 from nltk.twitter import Query, Streamer, Twitter, TweetViewer, TweetWriter, credsfromfile
 from settings import *
 import nltk
