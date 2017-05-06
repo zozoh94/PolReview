@@ -93,6 +93,4 @@ bin/
 include/
 share/
 
-rapport.log
-rapport.aux
-rapport.pdf
+rapport.*
