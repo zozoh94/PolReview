@@ -4,7 +4,6 @@
 from settings import *
 import nltk
 import sys
-import textract
 import re
 import unicodedata
 
@@ -30,12 +29,34 @@ class Opinion:
             self.ratio_for = self.fore / (self.total-self.no_opinions)
             self.ratio_against = self.against / (self.total-self.no_opinions)
 
-        
+            
 def parse_project(filename):
-    text = textract.process(project_directory + filename)
-    text = text.decode('utf-8')
-    text = text.strip().lower()
+    tokens = []
+    with open(project_directory + filename, "r") as filepointer:
+        text = filepointer.read()
+        text = text.strip().lower()
     return text
+    
+
+def subject(token, t,sujet):
+    libre_echange = subjects[sujet]               
+    for word in libre_echange:                    
+        reg = re.compile(r".*" + word + ".*")
+        if re.search(reg, t.decode('utf-8')):                        
+            candidate['opinions'][sujet].total += 1
+            candidate.update(opinions=candidate['opinions'])
+            for token in tokens:
+            #Suppression des accents
+                t2 = unicodedata.normalize('NFD', token).encode('ascii', 'ignore')
+                for a in againsts:                                
+                    reg = re.compile(r".*" + a + ".*")
+                    if re.search(reg, t2.decode('utf-8')):
+                        candidate['opinions'][sujet].against += 1
+                for f in fors:                                
+                    reg = re.compile(r".*" + f + ".*")
+                    if re.search(reg, t2.decode('utf-8')):                                   
+                        candidate['opinions'][sujet].fore += 1
+
 
 def analyze_subject(candidate, subject):
     words_subjects = subjects.get(subject, None)
@@ -91,7 +112,7 @@ if __name__ == '__main__':
     print("Analyse des programmes...\n\n")
     
     for candidate in candidates:
-        analyze_subject(candidate, 'libre-échange')
-        analyze_subject(candidate, 'souveraineté')        
+        for subject in subjects:
+            analyze_subject(candidate, subject)    
         
         print_results(candidate)
