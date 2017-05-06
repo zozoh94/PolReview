@@ -16,16 +16,16 @@ subjects = {
     'libre_echange' : ['libre-echang', 'mondialis'],
 }
 
-candidates = {
-    'arthaud': { 'name': "Nathalie Arthaud", 'file': 'arthaud.pdf'},
-    'poutou': { 'name': "Philippe Poutou", 'file': 'poutou.pdf'},
-    'melenchon' : { 'name': "Jean-Luc Mélenchon", 'file': 'melenchon.pdf'},
-    'cheminade': { 'name': "Jacques Cheminade", 'file': 'cheminade.pdf'},
-    'hamon' : { 'name': "Benoît Hamon", 'file': 'hamon.pdf'},
-    'macron' : { 'name': "Emmanuel Macron", 'file': 'macron.pdf'},
-    'lassalle' : { 'name': "Jean Lassalle", 'file': 'lassalle.pdf'},
-    'fillon' : { 'name': "François Fillon", 'file': 'fillon.pdf'},
-    'nda' : { 'name': "Nicolas Dupont-Aignan", 'file': 'nda.pdf'},
-    'asselineau' : { 'name': "François Asselineau", 'file': 'asselineau.pdf'},
-    'le-pen' : { 'name': "Marine Le Pen", 'file': 'le-pen.pdf'},
-}
+candidates = [
+    { 'name': "Nathalie Arthaud", 'file': 'arthaud.pdf'},
+    { 'name': "Philippe Poutou", 'file': 'poutou.pdf'},
+    { 'name': "Jean-Luc Mélenchon", 'file': 'melenchon.pdf'},
+    { 'name': "Jacques Cheminade", 'file': 'cheminade.pdf'},
+    { 'name': "Benoît Hamon", 'file': 'hamon.pdf'},
+    { 'name': "Emmanuel Macron", 'file': 'macron.pdf'},
+    { 'name': "Jean Lassalle", 'file': 'lassalle.pdf'},
+    { 'name': "François Fillon", 'file': 'fillon.pdf'},
+    { 'name': "Nicolas Dupont-Aignan", 'file': 'nda.pdf'},
+    { 'name': "François Asselineau", 'file': 'asselineau.pdf'},
+    { 'name': "Marine Le Pen", 'file': 'le-pen.pdf'},
+]
