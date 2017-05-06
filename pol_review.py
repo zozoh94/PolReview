@@ -49,6 +49,7 @@ def analyze_subject(candidate, subject):
         candidate['opinions'] = {}          
     candidate['opinions'][subject] = Opinion(subject.title())
     sentences = candidate['sentences']
+    
     for sentence in sentences:
         for token in sentence:
             t = unicodedata.normalize('NFD', token).encode('ascii', 'ignore')
