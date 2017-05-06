@@ -15,8 +15,21 @@ class Opinion:
         self.total = 0
         self.fore = 0
         self.against = 0
-        self.moy_pour=0
-        self.moy_contre=0
+        self.no_opinions = 0
+        self.ratio_for = 0
+        self.ratio_against = 0
+        self.ratio_no_opinions = 0        
+        
+    def finalize(self):        
+        if self.fore > self.total:
+            self.fore = self.total        
+        if self.against > self.total:
+            self.against = self.total
+        self.no_opinions = self.total - self.fore - self.against
+        if self.total != 0 and self.total != self.no_opinions:
+            self.ratio_for = self.fore / (self.total-self.no_opinions)
+            self.ratio_against = self.against / (self.total-self.no_opinions)
+
         
 def parse_project(filename):
     text = textract.process(project_directory + filename)
@@ -55,14 +68,15 @@ if __name__ == '__main__':
                                 reg = re.compile(r".*" + f + ".*")
                                 if re.search(reg, t2.decode('utf-8')):                                   
                                     candidate['opinions']['libre-échange'].fore += 1
-        if( candidate['opinions']['libre-échange'].total != 0):
-            candidate['opinions']['libre-échange'].moy_pour=candidate['opinions']['libre-échange'].fore / candidate['opinions']['libre-échange'].total
-            candidate['opinions']['libre-échange'].moy_contre=candidate['opinions']['libre-échange'].against / candidate['opinions']['libre-échange'].total
+
+        candidate['opinions']['libre-échange'].finalize()
+                                    
         print('\n'+candidate['name'])
         print("\nLibre échange :")
         print("Phrases concernées : " + str(candidate['opinions']['libre-échange'].total))
         print("Avis pour : " + str(candidate['opinions']['libre-échange'].fore))
         print("Avis contre : " + str(candidate['opinions']['libre-échange'].against))
-        print("indice pour : " + str(candidate['opinions']['libre-échange'].moy_pour))
-        print("indice contre : " + str(candidate['opinions']['libre-échange'].moy_contre))
+        print("Sans avis : " + str(candidate['opinions']['libre-échange'].no_opinions))
+        print("Indice pour : " + str(candidate['opinions']['libre-échange'].ratio_for))
+        print("Indice contre : " + str(candidate['opinions']['libre-échange'].ratio_against))
         print('\n\n')
