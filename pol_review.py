@@ -15,6 +15,8 @@ class Opinion:
         self.total = 0
         self.fore = 0
         self.against = 0
+        self.moy_pour=0
+        self.moy_contre=0
         
 def parse_project(filename):
     text = textract.process(project_directory + filename)
@@ -53,10 +55,14 @@ if __name__ == '__main__':
                                 reg = re.compile(r".*" + f + ".*")
                                 if re.search(reg, t2.decode('utf-8')):                                   
                                     candidate['opinions']['libre-échange'].fore += 1
-        
+        if( candidate['opinions']['libre-échange'].total != 0):
+            candidate['opinions']['libre-échange'].moy_pour=candidate['opinions']['libre-échange'].fore / candidate['opinions']['libre-échange'].total
+            candidate['opinions']['libre-échange'].moy_contre=candidate['opinions']['libre-échange'].against / candidate['opinions']['libre-échange'].total
         print('\n'+candidate['name'])
         print("\nLibre échange :")
         print("Phrases concernées : " + str(candidate['opinions']['libre-échange'].total))
         print("Avis pour : " + str(candidate['opinions']['libre-échange'].fore))
         print("Avis contre : " + str(candidate['opinions']['libre-échange'].against))
+        print("indice pour : " + str(candidate['opinions']['libre-échange'].moy_pour))
+        print("indice contre : " + str(candidate['opinions']['libre-échange'].moy_contre))
         print('\n\n')
