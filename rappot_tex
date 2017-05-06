@@ -1,0 +1,52 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{empheq}
+
+\title{TAL - Politic review}
+\author{ Ismail Erradi, Björn Goriatcheff, Enzo Hamelin  }
+\date{06 May 2017}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+    In this project, analyzing language syntax and semantic is used in order to review, rate and classify ideas extracted from the program of every presidential candidates. On 5 different topics, we analyzed what was the opinion of each candidate and how those ideas were correlate.
+    
+\section{Goals}
+\begin {itemize}
+\item Extracting/parsing opinion of candidates on 5 different subjects.
+\item Weighting them using appropriate metric.
+\item Emphasizing the emergence of a group.
+\item Implementing an ask-answer system.
+\end{itemize}
+
+
+\section{Functions}
+\subsection{Data preparation}
+\paragraph{Dictionary}
+The listing of every candidates have been implemented in a dictionary to create aliases.
+The listing of subjects have also been implemented in a dictionary containing the synonyms and other words associated to the subject.
+Both dictionaries are included in the file "settings.py"
+\paragraph{Programs}
+Every presidential program have been previously downloaded and imported into the folder "projects".
+
+\subsection{Parsing}
+In order to parse the programs, we used textract library to parse pdf encoded files out to text.
+Additionally, this text was tokenized using nltk library.
+
+\subsection{Weighting}
+Weighting correctly generated tokens was the most difficult part of our project. In order to do so, we semantically analyze a sentence of tokens. If this sentence contained a keyword of our dictionary then the proposition was weighted according to the grammar (affirmative sentence or negative sentence).
+Every similar proposition is weighted the same way and counted as a positive or negative proposition. 
+\subsection{Classify}
+To classify the position of a candidate on a precise subject we count how many times this subject was recall in the program and how was the recall (positive or negative) compared to the original opinion. A simple calculus is executed to know if we can trust the opinion using the following formula: 
+\begin{empheq}{equation*}
+\large trust = \frac {positive}{positive+negative+neutral}
+\end{empheq}
+\section{Results}
+\section{To Achieve}
+
+
+
+\end{document}
+
