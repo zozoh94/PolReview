@@ -86,6 +86,12 @@ def print_results(candidate):
         print("Sans avis : " + str(opinion.no_opinions))
         print("Indice pour : " + str(opinion.ratio_for))
         print("Indice contre : " + str(opinion.ratio_against))
+        if(opinion.ratio_for>opinion.ratio_against):
+            print("pour")
+        elif(opinion.ratio_against>opinion.ratio_for):
+            print("contre")
+        else:
+            print("neutre")
         
     print('\n\n')
 
