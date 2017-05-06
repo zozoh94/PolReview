@@ -15,8 +15,23 @@ class Opinion:
         self.total = 0
         self.fore = 0
         self.against = 0
-        self.moy_pour=0
-        self.moy_contre=0
+        self.no_opinions = 0
+        self.ratio_for = 0
+        self.ratio_against = 0
+        self.ratio_no_opinions = 0        
+        
+    def finalize(self):        
+        if self.fore > self.total:
+            self.fore = self.total        
+        if self.against > self.total:
+            self.against = self.total
+        if self.total < (self.fore + self.against):
+            self.total = self.fore + self.against
+        self.no_opinions = self.total - self.fore - self.against
+        if self.total != 0 and self.total != self.no_opinions:
+            self.ratio_for = self.fore / (self.total-self.no_opinions)
+            self.ratio_against = self.against / (self.total-self.no_opinions)
+
         
 def parse_project(filename):
     text = textract.process(project_directory + filename)
@@ -24,45 +39,63 @@ def parse_project(filename):
     text = text.strip().lower()
     return text
 
+
+def analyze_subject(candidate, subject):
+    words_subjects = subjects.get(subject, None)
+    if not words_subjects:
+        print("Subject " + subject + " does not exist") 
+        exit()
+    if not candidate.get('opinions', None):
+        candidate['opinions'] = {}          
+    candidate['opinions'][subject] = Opinion(subject.title())
+    text = candidate['project']
+    sentences = nltk.sent_tokenize(text, 'french')
+    for sentence in sentences:
+        tokens = nltk.word_tokenize(sentence, 'french')
+        for token in tokens:
+            t = unicodedata.normalize('NFD', token).encode('ascii', 'ignore')
+
+            libre_echange = subjects[subject]               
+            for word in words_subjects:                    
+                reg = re.compile(r".*" + word + ".*")
+                if re.search(reg, t.decode('utf-8')):                        
+                    candidate['opinions'][subject].total += 1
+                    for token in tokens:
+                        #Suppression des accents
+                        t2 = unicodedata.normalize('NFD', token).encode('ascii', 'ignore')
+                        for a in againsts:                                
+                            reg = re.compile(r".*" + a + ".*")
+                            if re.search(reg, t2.decode('utf-8')):
+                                candidate['opinions'][subject].against += 1
+                        for f in fors:                                
+                            reg = re.compile(r".*" + f + ".*")
+                            if re.search(reg, t2.decode('utf-8')):                                   
+                                candidate['opinions'][subject].fore += 1
+
+    candidate['opinions'][subject].finalize()
+
+    
+def print_results(candidate):
+    print('\n'+candidate['name'])
+
+    for opinion in candidate['opinions'].values():        
+        print("\n"+opinion.name+" :")
+        print("Phrases concernées : " + str(opinion.total))
+        print("Avis pour : " + str(opinion.fore))
+        print("Avis contre : " + str(opinion.against))
+        print("Sans avis : " + str(opinion.no_opinions))
+        print("Indice pour : " + str(opinion.ratio_for))
+        print("Indice contre : " + str(opinion.ratio_against))
+        
+    print('\n\n')
+
+
 if __name__ == '__main__':
     print("Analyse des programmes...\n\n")
     
     for candidate in candidates:
-        candidate['opinions'] = {}        
-        candidate['opinions']['libre-échange'] = Opinion('libre-échange')
-        text = parse_project(candidate.get('file'))
-        sentences = nltk.sent_tokenize(text, 'french')
-        for sentence in sentences:
-            tokens = nltk.word_tokenize(sentence, 'french')
-            for token in tokens:
-                t = unicodedata.normalize('NFD', token).encode('ascii', 'ignore')
-
-                #Analyse sujet libre échange
-                libre_echange = subjects['libre_echange']               
-                for word in libre_echange:                    
-                    reg = re.compile(r".*" + word + ".*")
-                    if re.search(reg, t.decode('utf-8')):                        
-                        candidate['opinions']['libre-échange'].total += 1
-                        candidate.update(opinions=candidate['opinions'])
-                        for token in tokens:
-                            #Suppression des accents
-                            t2 = unicodedata.normalize('NFD', token).encode('ascii', 'ignore')
-                            for a in againsts:                                
-                                reg = re.compile(r".*" + a + ".*")
-                                if re.search(reg, t2.decode('utf-8')):
-                                    candidate['opinions']['libre-échange'].against += 1
-                            for f in fors:                                
-                                reg = re.compile(r".*" + f + ".*")
-                                if re.search(reg, t2.decode('utf-8')):                                   
-                                    candidate['opinions']['libre-échange'].fore += 1
-        if( candidate['opinions']['libre-échange'].total != 0):
-            candidate['opinions']['libre-échange'].moy_pour=candidate['opinions']['libre-échange'].fore / candidate['opinions']['libre-échange'].total
-            candidate['opinions']['libre-échange'].moy_contre=candidate['opinions']['libre-échange'].against / candidate['opinions']['libre-échange'].total
-        print('\n'+candidate['name'])
-        print("\nLibre échange :")
-        print("Phrases concernées : " + str(candidate['opinions']['libre-échange'].total))
-        print("Avis pour : " + str(candidate['opinions']['libre-échange'].fore))
-        print("Avis contre : " + str(candidate['opinions']['libre-échange'].against))
-        print("indice pour : " + str(candidate['opinions']['libre-échange'].moy_pour))
-        print("indice contre : " + str(candidate['opinions']['libre-échange'].moy_contre))
-        print('\n\n')
+        candidate['project'] = parse_project(candidate.get('file'))
+        for subject in subjects:
+            analyze_subject(candidate, subject)            
+        
+        print_results(candidate)
